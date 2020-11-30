@@ -9,31 +9,26 @@ class Node:
         return 'Node: {}'.format(self.key)
 
 class BinarySearchTree:
-
     def __init__(self):
         self.root = None 
 
     def find_in_order_successor(self, inputNode):
-        currTraveller = self.root
-        currKey = self.root.key
-        currSuccessor = None
-        
-        key = inputNode.key
+        def get_min(root):
+            while root.left:
+                root = root.left
+            return root
 
-        while currTraveller:
-            if currTraveller.key > key:
-                if currTraveller.key <= currKey:
-                    currSuccessor = currTraveller
-                    currKey = currTraveller.key
-                currTraveller = currTraveller.left
-            else:
-                currTraveller = currTraveller.right
-                currKey = currTraveller.key if currTraveller else currKey
+        if inputNode.right:
+            return get_min(inputNode.right)
 
-        
-        return currSuccessor
-        
+        child = inputNode
+        parent = child.parent
 
+        while parent and parent.right == child:
+            child = parent
+            parent = parent.parent
+
+        return child.parent
 
     def insert(self, key):
         
@@ -84,13 +79,13 @@ bst.insert(12);
 bst.insert(11); 
 bst.insert(14);     
 
-test = bst.getNodeByKey(12)
+test = bst.getNodeByKey(11)
 
 succ = bst.find_in_order_successor(test)
 
 if succ is not None:
     print ("\nInorder Successor of %d is %d " \
-                    %(test.key , succ.key))
+                %(test.key , succ.key))
 else:
     print ("\nInorder Successor doesn't exist")
 
