@@ -83,9 +83,18 @@ def solve(schedule_a, schedule_b):
 
     for a, b in zip(schedule_a, schedule_b):
         smaller = a if a < b else b
-        mix.append(smaller)
+        larger = a if a >= b else b
 
-    return mix
+        mix.append(smaller)
+        mix.append(larger)
+
+    res = []
+    for a, b in zip(mix[:-1], mix[1:]):
+        if a.overlaps(b):
+            continue
+        res.append(TimeInterval(a.end, b.start))
+
+    return res
 
 
 def main():
@@ -115,7 +124,9 @@ def main():
     two_free = get_free_slots(TimeInterval(Time.from_str('8:00'), Time.from_str('17:00')), two)
     
     # print(*[a.intersect(b) for a, b in product(one_free, two_free) if a.overlaps(b)], sep='\n')
-    print(*filter(None, starmap(TimeInterval.intersect, product(one_free, two_free))))
+    # print(*filter(None, starmap(TimeInterval.intersect, product(one_free, two_free))))
+
+    print(solve(one, two))
 
 
 if __name__ == '__main__':
