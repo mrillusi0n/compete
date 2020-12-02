@@ -78,23 +78,17 @@ def get_free_slots(window, intervals):
 
     return filter(None, slots)
 
-def solve(schedule_a, schedule_b):
-    mix = []
-
-    for a, b in zip(schedule_a, schedule_b):
-        smaller = a if a < b else b
-        larger = a if a >= b else b
-
-        mix.append(smaller)
-        mix.append(larger)
+def solve(window, schedule_a, schedule_b):
+    mix = sorted(schedule_a + schedule_b)
 
     res = []
+
     for a, b in zip(mix[:-1], mix[1:]):
         if a.overlaps(b):
             continue
         res.append(TimeInterval(a.end, b.start))
 
-    return res
+    return list(filter(None, [TimeInterval(window.start, min(schedule_a[0].start, schedule_b[0].start))] + res + [TimeInterval(max(schedule_a[-1].end, schedule_b[-1].end), window.end)]))
 
 
 def main():
@@ -107,7 +101,7 @@ def main():
     ind_b = [
         ("09:00", "10:00"),
         ("11:00", "12:15"),
-        ("12:15", "13:00"),
+        ("13:15", "14:00"),
     ]
 
     res = [
@@ -126,7 +120,7 @@ def main():
     # print(*[a.intersect(b) for a, b in product(one_free, two_free) if a.overlaps(b)], sep='\n')
     # print(*filter(None, starmap(TimeInterval.intersect, product(one_free, two_free))))
 
-    print(solve(one, two))
+    print(solve(TimeInterval(Time.from_str('8:00'), Time.from_str('17:00')), one, two))
 
 
 if __name__ == '__main__':
