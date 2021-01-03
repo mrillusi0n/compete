@@ -5,12 +5,11 @@ def explore(area, r, c):
         return 0
 
     area[r][c] = 'x'
-    dr, dc = [0, 1]
 
-    for _ in range(4):
-        if area[(nr := r + dr)][(nc := c + dc)] == '1':
+    for i in range(4):
+        vec = 1j ** i
+        if area[(nr := r + vec.imag)][(nc := c + vec.real)] == '1':
             explore(area, nr, nc)
-        dr, dc = -dc, dr
 
     return 1
 
