@@ -8,35 +8,35 @@ def explore(area, r, c):
 
     for i in range(4):
         vec = 1j ** i
-        if area[(nr := r + vec.imag)][(nc := c + vec.real)] == '1':
+        if area[(nr := r + int(vec.imag))][(nc := c + int(vec.real))] == '1':
             explore(area, nr, nc)
 
     return 1
 
-lines = '''\
-5 5
-1 1 0 0 0
-1 1 1 0 1
-0 1 1 0 1
-0 1 1 0 1
-1 0 0 1 1'''
+def get_num_blocks(area):
+    return sum(explore(area, i, j) for i, row in enumerate(area) for j, cell in enumerate(row) if cell == '1')
 
-dims, *lines = lines.replace('0', 'x').split('\n')
+def solve(data):
+    dims, *lines = data.replace('0', 'x').split('\n')
+    rows, cols = [int(x) + 2 for x in dims.split()]
 
-rows, cols = [int(x) + 2 for x in dims.split()]
+    grid = [['x'] + line.split() + ['x'] for line in lines]
+    pad = [['x'] * cols]
+    grid =  pad + grid + pad
 
-grid = [['x'] + line.split() + ['x'] for line in lines]
-pad = [['x'] * cols]
-grid =  pad + grid + pad
+    return get_num_blocks(grid)
+
+def main():
+    lines = '''\
+    5 5
+    1 1 0 0 1
+    1 1 1 0 1
+    0 1 1 0 0
+    0 1 1 0 1
+    1 0 0 1 1'''
+
+    print(solve(lines))
 
 
-# count = 0
-# for i, row in enumerate(grid):
-#     for j, cell in enumerate(row):
-#         if cell == '1':
-#             count += explore(grid, i, j)
-
-print(sum(explore(grid, i, j) for i, row in enumerate(grid) for j, cell in enumerate(row) if cell == '1'))
-
-
-# print(count)
+if __name__ == '__main__':
+    main()
