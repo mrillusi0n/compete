@@ -4,27 +4,21 @@ def explore(area, r, c):
     if area[r][c] == 'x':
         return 0
 
-    offsets = [
-        (1, 0),
-        (-1, 0),
-        (0, 1),
-        (0, -1)
-    ]
-
     area[r][c] = 'x'
+    dr, dc = [0, 1]
 
-
-    for roff, coff in offsets:
-        if area[(nr := r + roff)][(nc := c + coff)] == '1':
+    for _ in range(4):
+        if area[(nr := r + dr)][(nc := c + dc)] == '1':
             explore(area, nr, nc)
+        dr, dc = -dc, dr
 
     return 1
 
 lines = '''\
 5 5
 1 1 0 0 0
-1 1 1 0 0
-0 1 1 0 0
+1 1 1 0 1
+0 1 1 0 1
 0 1 1 0 1
 1 0 0 1 1'''
 
