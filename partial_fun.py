@@ -14,7 +14,11 @@ def s_get_counts(strings, letters):
 def p_get_counts(strings, letters):
     return map(partial.__call__, map(partial(partial, str.count), strings), letters)
 
+def f_get_counts(strings, letters):
+    return map(lambda letter, string: len(list(filter(letter.__eq__, string))), letters, strings)
+
 print(list(l_get_counts(strings, letters)))
 print(list(s_get_counts(strings, letters)))
 print(list(p_get_counts(strings, letters)))
+print(list(f_get_counts(strings, letters)))
 
