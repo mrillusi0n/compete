@@ -4,7 +4,13 @@ from itertools import count
 from functools import partial
 
 def get_squares():
-    return map(partial(pow, exp=2), count())
+    return map(partial(pow, exp=2), count(1))
+
+from itertools import tee
+from operator import mul
+
+def get_squares():
+    return map(mul, *tee(count(1)))
 
 squares = get_squares()
 
