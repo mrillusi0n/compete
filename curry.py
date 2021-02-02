@@ -15,8 +15,7 @@ def a_curry(*, nargs):
         return partial(*([partial] * (nargs - 1)), f)
     return decorator
 
-
-@curry(nargs=3)
+@a_curry(nargs=3)
 def avg_three(a, b, c):
     return (a + b + c) / 3
 
