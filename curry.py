@@ -10,11 +10,19 @@ def curry(*, nargs):
         return wrapper
     return decorator
 
+def a_curry(*, nargs):
+    def decorator(f):
+        return partial(*([partial] * (nargs - 1)), f)
+    return decorator
+
+
 @curry(nargs=3)
 def avg_three(a, b, c):
     return (a + b + c) / 3
 
-
+@curry(nargs=2)
+def add(a, b):
+    return a + b
 
 cap = partial(partial, partial, avg_three)
 
@@ -29,4 +37,5 @@ def curried_avg(n):
 
 # print(cap(5)(4)(3))
 print(avg_three(5)(4)(3))
+print(add(4)(3))
 # print(cap(5))
